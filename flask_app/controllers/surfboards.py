@@ -88,7 +88,7 @@ def get_surfboard_by_id(id):
     user = User.get_by_id(data)
     surfboard_id = {"id": id}
     surfboard = Surfboard.get_surfboard_by_id(surfboard_id)
-    print(surfboard.description)
+    print(surfboard.shaper)
 
     print(f"Surfboard retrieved: {surfboard}") # Debug print
     return render_template('showSurfboard.html',surfboard=surfboard, user = user)
@@ -101,6 +101,6 @@ def get_surfboard_by(id):
     print(f"Accessing surfboard with ID: {id}") # Debug print
     surfboard_id = {"id": id}
     surfboard = Surfboard.get_surfboard_by_id(surfboard_id)
-    print(surfboard.description)
+    print(surfboard.year)
     print(f"Recipe retrieved: {surfboard}") # Debug print
     return render_template('editSurfboard.html',surfboard = surfboard)
