@@ -32,36 +32,42 @@
                         <th scope="col">Shaper</th>
                         <th scope="col">Volume</th>
                         <th scope="col">Year</th>
+                        <th scope="col">Price</th>
                         <th scope="col" style="width: 40%;">Actions</th>
                       </tr>
                     </thead>
                          
                       <!-- More rows can go here -->
                   <tbody> 
+                    
+        <!-- existing logic -->
+  
+   
+                  {% if all_surfboards %}
                   {% for one_surfboard in all_surfboards%}
                   <tr>
                     <td>{{one_surfboard.board_name}}</td>
                     <td>{{one_surfboard.shaper }}</td>
                     <td>{{one_surfboard.volume }}</td>
                     <td>{{one_surfboard.year }}</td>
-               
+                    <td>{{one_surfboard.price }}</td>
+                    {% if one_surfboard.user_id == session['user_id'] %}
                     <td><a href='/surfboards/{{one_surfboard.id}}' style="display: inline;">View Surfboard</a> | <a href = '/surfboards/edit/{{one_surfboard.id}}' style= "display: inline; margin: 0; padding: 0;">Edit </a> |
                       <form action="/delete" method="post" style="display: inline;">
                         <input type="hidden" name="surfboard_id" value="{{ one_surfboard.id }}">
                         <button class ="btn btn-link" type="submit" style="padding: 0; border: none; background: none;">Delete</button>
                       </form>
                     </td>
+                    {%else%}
+                    <td><a href='/surfboards/{{one_surfboard.id}}' style="display: inline;">View Surfboard</a> </td>
+                    {%endif%}
                   </tr>
-                  {% else %}
-                  <tr>
-                      <th scope="row"></th>
-                      <td>{{one_surfboard.board_name}}</td>
-                      <td>{{one_surfboard.shaper }}</td>
-                      <td>{{one_surfboard.volume }}</td>
-                      <td>{{one_surfboard.year }}</td>
-                      <td><a href='/surfboards/{{one_surfboard.id}}'>View Surfboard</a></td>
-                    </tr>
                     {% endfor %}
+                    {%else%}
+                    <tr>
+                      <td colspan="5">No surfboards found.</td>
+                  </tr>
+                  {% endif %}
                   </table>
                 </table>
           </div>
@@ -74,25 +80,36 @@
                   <th scope="col">Shaper</th>
                   <th scope="col">Volume</th>
                   <th scope="col">Year</th>
+                  <th scope="col">Price</th>
                   <th scope="col">Action</th>
               </tr>
           </thead>
           <tbody>
               <!-- Sample row, repeat similar rows for each surfboard -->
               
+              {% if all_surfboards %}
               {% for one_surfboard in all_surfboards%}
               
-               {% if one_surfboard.user_id == session['user_id'] %}
+              {% if one_surfboard.user_id == session['user_id'] %}
                <tr>
                 <td>{{one_surfboard.board_name}}</td>
                 <td>{{one_surfboard.shaper }}</td>
                 <td>{{one_surfboard.volume }}</td>
                 <td>{{one_surfboard.year }}</td>
-                <td><a href='/surfboards/{{one_surfboard.id}}'>View Surfboard</a></td>
-              </tr>
-              {% endif %}
+                <td>{{one_surfboard.price }}</td>
+                <td><a href='/surfboards/{{one_surfboard.id}}' style="display: inline;">View Surfboard</a> | <a href = '/surfboards/edit/{{one_surfboard.id}}' style= "display: inline; margin: 0; padding: 0;">Edit </a> |
+                  <form action="/delete" method="post" style="display: inline;">
+                    <input type="hidden" name="surfboard_id" value="{{ one_surfboard.id }}">
+                    <button class ="btn btn-link" type="submit" style="padding: 0; border: none; background: none;">Delete</button>
+                </td>
+                  {% endif %}
              
-            {% endfor %}
+                  {% endfor %}
+                  {%else%}
+                  <tr>
+                    <td colspan="5">No surfboards found.</td>
+                </tr>
+                {% endif %}
                 </tbody>
               </table>
           </div>

@@ -8,6 +8,8 @@ class Surfboard:
         self.board_name = data['board_name']
         self.user_id = data["user_id"]
         self.year = data['year']
+        self.price = data['price']
+        self.image = data['image']
         self.shaper = data['shaper']
         self.volume = data['volume']
         self.created_at = data['created_at']
@@ -19,8 +21,8 @@ class Surfboard:
     def save(cls, data):
         #always have to pass in"cls" because it's a class method
         query = """
-                INSERT INTO surfboards (user_id, board_name, year, shaper, volume, created_at, updated_at) 
-                VALUES (%(user_id)s,%(board_name)s, %(year)s, %(shaper)s, %(volume)s,  NOW(), NOW());
+                INSERT INTO surfboards (user_id, price, image, board_name, year, shaper, volume, created_at, updated_at) 
+                VALUES (%(user_id)s, %(price)s, %(image)s, %(board_name)s, %(year)s, %(shaper)s, %(volume)s,  NOW(), NOW());
              """
         # data is a dictionary that will be passed into the save method from server.py
         return connectToMySQL('surfboards').query_db(query, data)
@@ -63,7 +65,7 @@ class Surfboard:
     def update(cls, data):
         query = """
             UPDATE surfboards
-            SET board_name = %(board_name)s, volume = %(volume)s, shaper = %(shaper)s, year = %(year)s, updated_at = NOW()
+            SET board_name = %(board_name)s, price = %(price)s, image = %(image)s, volume = %(volume)s, shaper = %(shaper)s, year = %(year)s, updated_at = NOW()
             WHERE id = %(id)s;
             """
         return connectToMySQL('surfboards').query_db(query, data)

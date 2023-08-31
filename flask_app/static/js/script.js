@@ -1,0 +1,1 @@
+document.getElementById("productImage").src = "surfboards/static/img/singlefin.jpg";
