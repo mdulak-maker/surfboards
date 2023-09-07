@@ -4,8 +4,13 @@ from flask_app.models.user import User
 from flask import render_template, redirect, request, session, flash
 from werkzeug.utils import secure_filename
 from werkzeug.utils import safe_join
+from flask_app.config.mysqlconnection import connectToMySQL # Import your MySQL connection function
+import boto3
 import os
 
+s3 = boto3.client('s3', 
+                  aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'), 
+                  aws_secret_access_key=os.getenv('AWS_SECRET'))
 
 @app.route("/surfboards")
 def dashboard():
@@ -24,47 +29,65 @@ def dashboard():
     surfboard = Surfboard.get_surfboard_by_id(surfboard_id)
     return render_template("Dashboard.html", all_surfboards=all_surfboards, user=user, surfboard = surfboard)
     
+
 @app.route("/surfboards/new", methods = ["GET",'POST'])
 def add_surfboard():
+    ALLOWED_EXTENSIONS = {'png', 'jpeg'}
+    def allowed_file(filename):
+    #taking the filename, indicating on what chracter I should use to breakdown the filename into multiple parts
+    #then making everything lowercase for easier processing
+        return '.' in filename and filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
+
     if 'user_id' not in session:
         flash("You must be logged in to view this page.")
         return redirect("/") 
-    
+
     if request.method == "POST":
-        # Check for file first (whether it's empty, etc.)
-        file = request.files['image']
-        
+        file = request.files['file']
         if file.filename == '':
             flash('No selected file')
             return redirect("/surfboards/new")
-        
-        os.makedirs('static/img', exist_ok=True) #make the directory/ensure that it exists
-        filename = secure_filename(file.filename)
-        file_path = safe_join(app.root_path, 'static', 'img', filename)  # Uses an absolute path
-        file.save(file_path)
+
+        # Upload to S3 here
+        # s3.upload_fileobj(file, 'surfboardscodingdojo', file.filename)
+        s3.upload_fileobj(file, 'surfboardscodingdojo', file.filename)
+        s3_url = f"https://surfboardscodingdojo.s3.amazonaws.com/{file.filename}"
+        print(file.filename)
+        print(s3_url)
         user_id = session['user_id']
         data = {
             "user_id": user_id,
             "board_name": request.form["board_name"],
             "volume": request.form["volume"],
             "price": request.form['price'],
-            "image": filename,  # store just the filename in database
+            "image": s3_url,
             "shaper": request.form["shaper"],
             "year": request.form["year"],
         }
-    
+
         if not Surfboard.validate_surfboard(request.form):
             return redirect('/surfboards/new')
-        else:
-            print("Data dictionary before saving:", data)
-            Surfboard.save(data)
-            print(data)
-            return redirect("/surfboards")
+
+        Surfboard.save(data)
+        return redirect("/surfboards")
 
     return render_template("addSurfboard.html")
 
+@app.route("/surfboards/gallery", methods = ["GET"])
+def get_gallery():
+    mysql = connectToMySQL('surfboards')
+    query = "SELECT image FROM surfboards;"
+    image_urls = mysql.query_db(query)
+    print("Image URLs:", image_urls)
+    return render_template('gallery.html',image_urls = image_urls)
+
+
 @app.route("/surfboards/update", methods = ["GET",'POST'])
 def edit_surfboard():
+    if 'user_id' not in session:
+        flash("You must be logged in to view this page.")
+        return redirect("/") 
+    
     if request.method == "POST":
     
         id = request.form['id']
@@ -75,7 +98,7 @@ def edit_surfboard():
             "volume": request.form["volume"],
             "price": request.form["price"],
             "year": request.form["year"],
-            "image": request.form["image"]
+            "image": s3_url
         }
         if not Surfboard.validate.surfboard(request.form):
             return redirect(f'/surfboards/edit/{id}')
@@ -96,6 +119,7 @@ def get_surfboard_by_id(id):
     if 'user_id' not in session:
         flash("You must be logged in to view this page.")
         return redirect("/") 
+    
     print(f"Accessing surfboard with ID: {id}") # Debug print
     
     user_id = session['user_id']

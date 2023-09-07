@@ -8,8 +8,41 @@
   
 </head>
 <body>
-    <div class="container mt-5">
-      <h2 class="mb-3">Surfboard Dashboard</h2>
+
+
+  <!-- Navigation Bar -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <!-- Webpage Title -->
+      <a class="navbar-brand" href="#">Surfbrd</a>
+      
+      <!-- Toggle Button for Smaller Screens -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <!-- Navigation Links -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/surfboards">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/surfboards/gallery">Gallery</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/surfboards/new">Add Surfboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5 pt-5">
   
       <!-- Tabs navigation -->
       <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -17,12 +50,14 @@
               <a class="nav-link active" id="all-tab" data-bs-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All Surfboards</a>
           </li>
           <li class="nav-item" role="presentation">
-              <a class="nav-link" id="mine-tab" data-bs-toggle="tab" href="#mine" role="tab" aria-controls="mine" aria-selected="false">My Surfboards</a>
+              <a class="nav-link " id="mine-tab" data-bs-toggle="tab" href="#mine" role="tab" aria-controls="mine" aria-selected="false">My Surfboards</a>
           </li>
       </ul>
-  
+      <div class="container mt-5">
       <!-- Tabs content -->
-      <div class="tab-content" id="myTabContent">
+    
+    
+      <div class="tab-content " id="myTabContent">
           <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
               <!-- All Surfboards Table -->
               <table class="table mt-3">
@@ -116,8 +151,8 @@
       </div>
   </div>
 
-    <a href = "/surfboards/new">Add Surfboard</a>
-    <a href = '/logout'>Log out</a>
+    
+   
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>

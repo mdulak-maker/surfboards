@@ -2,6 +2,8 @@ from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 from datetime import datetime
 
+
+
 class Surfboard:
     def __init__( self , data ):
         self.id = data['id']
@@ -65,7 +67,7 @@ class Surfboard:
     def update(cls, data):
         query = """
             UPDATE surfboards
-            SET board_name = %(board_name)s, price = %(price)s, image = %(image)s, volume = %(volume)s, shaper = %(shaper)s, year = %(year)s, updated_at = NOW()
+            SET board_name = %(board_name)s, price = %(price)s, image = %(s3_url)s , volume = %(volume)s, shaper = %(shaper)s, year = %(year)s, updated_at = NOW()
             WHERE id = %(id)s;
             """
         return connectToMySQL('surfboards').query_db(query, data)
