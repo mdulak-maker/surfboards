@@ -50,6 +50,8 @@ class User:
             return False
         return cls(result[0])
     
+
+    #login and registration validation
     @staticmethod
     def validate_user(user):
         is_valid = True

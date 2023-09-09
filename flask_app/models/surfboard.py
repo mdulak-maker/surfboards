@@ -72,6 +72,8 @@ class Surfboard:
             """
         return connectToMySQL('surfboards').query_db(query, data)
 
+
+    #validation for creating or updating a sufboard
     @staticmethod
     def validate_surfboard(surfboard):
         is_valid = True
@@ -86,6 +88,12 @@ class Surfboard:
             is_valid = False
         if len(surfboard['year']) < 4:
             flash("Must enter four digit year")
+            is_valid = False
+        if len(surfboard['price']) <1:
+            flash ("Must enter value greater than 0")
+            is_valid = False
+        if surfboard['price'] == " ":
+            Flash("must enter value")
             is_valid = False
         return is_valid
     

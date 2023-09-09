@@ -20,7 +20,7 @@ def login():
       "email":request.form["email"]
     }
     user_in_db = User.get_by_email(data)
-   
+   #validating - can't login unless they area a user in the database
     if not user_in_db:
         flash("Invalid Email")
         return redirect("/")

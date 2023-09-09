@@ -8,6 +8,7 @@ from flask_app.config.mysqlconnection import connectToMySQL # Import your MySQL 
 import boto3
 import os
 
+
 s3 = boto3.client('s3', 
                   aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'), 
                   aws_secret_access_key=os.getenv('AWS_SECRET'))
@@ -76,7 +77,7 @@ def add_surfboard():
 @app.route("/surfboards/gallery", methods = ["GET"])
 def get_gallery():
     mysql = connectToMySQL('surfboards')
-    query = "SELECT image FROM surfboards;"
+    query = "SELECT image, id FROM surfboards;"
     image_urls = mysql.query_db(query)
     print("Image URLs:", image_urls)
     return render_template('gallery.html',image_urls = image_urls)
@@ -145,3 +146,10 @@ def get_surfboard_by(id):
     print(f"Recipe retrieved: {surfboard}") # Debug print
     return render_template('editSurfboard.html',surfboard = surfboard)
 
+@app.route("/surfboards/weather", methods = ["GET"])
+def get_weather():
+    api_key = os.environ.get("WEATHER_API_KEY")
+    if 'user_id' not in session:
+        flash("You must be logged in to view this page.")
+        return redirect("/") 
+    return render_template("weather.html")

@@ -7,29 +7,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <style>
-        .card-img-top {
-            object-fit: cover;
-            width: 300px;
-            height: 300px;
-        }
-
-        /* Added styles */
-        body {
-            padding-top: 80px; /* Adjust for fixed navbar */
-        }
-
-        .card:hover {
-            transform: scale(1.05);
-            transition: transform .2s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-    </style>
+    
 </head>
 
 <body>
@@ -70,21 +48,24 @@
     </nav>
 
     <div class="container mt-5">
-        <h1>Photo Gallery</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <!-- Repeat this block for each image -->
-            {% for one_row in image_urls %}
+        <div class="row">
+            <!-- Weather Container -->
             <div class="col">
-                <div class="card">
-                    <a href = "/surfboards/{{one_row.id}}">
-                        <img src="{{one_row.image}}" class="card-img-top" alt="Surfboard Image">
-                    </a>
-                </div>
+                <h1>Weather</h1>
+                <iframe width="100%" height="450" src="https://embed.windy.com/embed2.html?lat=37.756&lon=-122.487&detailLat=37.756&detailLon=-122.487&width=650&height=450&zoom=5&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1" frameborder="0"></iframe>
             </div>
-            {% endfor %}
+    
+            <!-- Board Recommendation Container -->
+            <div class="col">
+                <h1>Board Recommendation</h1>
+                <!-- Your board recommendation content here -->
+                <div class = "mt-5 "id = 'wind-info'></div>
+                <div class = "mt-5" id = 'board-recommendation'></div>
+                
+            </div>
         </div>
     </div>
-
+    <script src="{{ url_for('static', filename='JS/script.js') }}"></script> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
