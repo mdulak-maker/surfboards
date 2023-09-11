@@ -8,7 +8,7 @@ async function getWeather(lat, lon) {
     var data = await response.json();
     console.log(data);
     var windSpeed = data.wind.speed;
-    windContainer.innerHTML = `Wind speed: ${windSpeed} mph`;
+    windContainer.innerHTML = `The curren wind speed in San Francisco is: ${windSpeed} mph`;
     pageAdvice(windSpeed);
 }
 
