@@ -77,7 +77,7 @@ def add_surfboard():
 @app.route("/surfboards/gallery", methods = ["GET"])
 def get_gallery():
     mysql = connectToMySQL('surfboards')
-    query = "SELECT image, id FROM surfboards;"
+    query = "SELECT image,  FROM surfboards;"
     image_urls = mysql.query_db(query)
     print("Image URLs:", image_urls)
     return render_template('gallery.html',image_urls = image_urls)
@@ -99,9 +99,9 @@ def edit_surfboard():
             "volume": request.form["volume"],
             "price": request.form["price"],
             "year": request.form["year"],
-            "image": s3_url
+            
         }
-        if not Surfboard.validate.surfboard(request.form):
+        if not Surfboard.validate_surfboard(request.form):
             return redirect(f'/surfboards/edit/{id}')
         else:
             Surfboard.update(data)

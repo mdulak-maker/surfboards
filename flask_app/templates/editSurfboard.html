@@ -46,7 +46,7 @@
         </div>
     </nav>
 
-    <form action="/surfboards/update" method="post" class="p-3 col-4 mx-auto my-5 bg-dark text-light">
+    <form action="/surfboards/update" method="post" enctype="multipart/form-data" class="p-3 col-4 mx-auto my-5 bg-dark text-light">
         <input type="hidden" name="id" value="{{ surfboard.id }}">
 
         <h2 class="text-center text-primary">Edit Surfboard</h2>
@@ -78,9 +78,6 @@
             <label for="price">Price</label>
             <input type="number" name="price" id="price" class="form-control">
         </div>
-        <h1 class = "text-center text-primary" >Upload an Image</h1>
-        Select image to upload:
-        <input type="file" name="file" accept="image/*">
           <input type="Submit" value="Submit" class="btn btn-primary bg-blue btn-outline-light m-1">
         
     </form>
